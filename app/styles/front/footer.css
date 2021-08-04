@@ -1,0 +1,105 @@
+.footer-box h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fc3c2d;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    margin-top: 10px;
+}
+.footer-box ul li {
+    list-style: none;
+    margin-bottom: 10px;
+}
+
+.footer-box ul {
+    padding: 0px;
+}
+.footer-box ul li a {
+    font-size: 14px;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    color: #858cad;
+    text-transform: uppercase;
+}
+.footer-inner {
+    background: #12162d;
+    padding: 150px 0px 15px;
+    clip-path: polygon(0 0, 100% 29%, 100% 100%, 0 100%);
+}
+.footer {
+    background: #f4f4f4;
+}
+.copyright {
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
+    color: #858cad;
+}
+.footer-box img {
+    width: 100px;
+}
+.followus h3{
+
+}
+.followus {
+    margin: 30px 0 0 0;
+}
+.followus h3 {
+    font-size: 18px;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: normal;
+    color: #fff;
+    margin-bottom: 20px;
+}
+.followus ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+.f-icon {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    border-radius: 50%;
+}
+.facebook {
+    background: #3b5998;
+}
+.twitter {
+    background: #55acee;
+}
+.linkedin {
+    background: #007ab9;
+}
+.youtube {
+    background: #c4302b;
+}
+
+.f-icon i {
+    font-size: 22px;
+}
+
+
+.footer-box ul li a:hover {
+    text-decoration: none;
+    color: #fff;
+}
+.app-img img {
+    width: 100%;
+}
+.app-img {
+    margin-bottom: 20px;
+}
