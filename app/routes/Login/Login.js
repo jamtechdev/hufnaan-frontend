@@ -1,53 +1,118 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link } from 'react-router-dom'
+import { userActions } from "../../_actions/user";
+import { connect } from "react-redux";
+import  {googleProvider,auth} from './../../_helpers'
+import { useForm, Controller } from "react-hook-form";
+import _ from "lodash";
 import {
     Form,
     FormGroup,
-    FormText,
     Input,
-    CustomInput,
     Button,
-    Label,
+    FormText,
     EmptyLayout,
     ThemeConsumer
 } from './../../components';
+import logo from '../../images/front/logo.png'
+import googleicon from '../../images/front/google-icon.png';
+import facebookicon from '../../images/front/facebook-icon.png';
 
-import { HeaderAuth } from "../components/Pages/HeaderAuth";
-import { FooterAuth } from "../components/Pages/FooterAuth";
-
-const Login = () => (
-    <EmptyLayout>
+function Login(props) {
+    const { handleSubmit, control, formState: { errors } } = useForm({
+        mode: 'onChange',
+        reValidateMode: 'onChange'
+    });
+    const onSubmit = (data) => {
+        const { email, password,role } = { ...data };
+        props.login(email,password,role)
+    };
+    const signInWithGoogle = () => {
+        auth
+          .signInWithPopup(googleProvider)
+          .then((res) => {
+            return res.user;
+          })
+          .catch((error) => {
+            return error.message;
+          });
+      };
+    return(
+        <EmptyLayout>
         <EmptyLayout.Section center>
             { /* START Header */}
-            <HeaderAuth 
-                title="Sign In to Application"
-            />
+            <div className="login-section">
+            <div className="logo-box-login">
+                <img src={logo}/>
+                <h3 className="login-title"> Login </h3>
+            </div>
             { /* END Header */}
             { /* START Form */}
-            <Form className="mb-3">
+            <Form className="mb-3" onSubmit={handleSubmit(onSubmit)}>
                 <FormGroup>
-                    <Label for="emailAdress">
-                        Email Adress
-                    </Label>
-                    <Input type="email" name="email" id="emailAdress" placeholder="Enter email..." className="bg-white" />
-                    <FormText color="muted">
-                        We&amp;ll never share your email with anyone else.
-                    </FormText>
+                <Controller
+                           render={({ field }) => <Input type="email" placeholder="Enter Email" {...field} />}
+                            name="email"
+                            control={control}
+                            className="bg-gray"
+                            rules={{
+                                required: {
+                                    value: true,
+                                    message: "Email is required field.",
+                                }
+                            }}
+                            defaultValue={""}
+
+                        />
+                        {errors.email && (
+                            <FormText color={"danger"}>{errors.email.message} </FormText>
+                        )}
                 </FormGroup>
                 <FormGroup>
-                    <Label for="password">
-                        Password
-                    </Label>
-                    <Input type="password" name="password" id="password" placeholder="Password..." className="bg-white" />
+                     <Controller
+                            render={({ field }) => <Input type="password" placeholder="Enter Password" {...field} />}
+                            name="password"
+                            control={control}
+                            className="bg-gray"
+                            defaultValue={""}
+                            rules={{
+                                required: {
+                                    value: true,
+                                    message: "Password is required field.",
+                                }
+                            }}
+                        />
+                        {errors.password && (
+                            <FormText color={"danger"}>{errors.password.message} </FormText>
+                        )}
                 </FormGroup>
                 <FormGroup>
-                    <CustomInput type="checkbox" id="rememberPassword" label="Remember Password" inline />
-                </FormGroup>
+                <Controller
+        name="role"
+        className="bg-gray"
+        control={control}
+        defaultValue={"user"}
+        render={({ field }) => <Input type="select" placeholder="Select Role" required
+          {...field} 
+        >
+        <option value="student">User</option>
+        <option value="tutor">Tutor</option>
+        <option value="doctor">Doctor</option>
+        </Input>}
+      />
+                    </FormGroup>
+                <div className="forgot-p text-right">
+                <Link to="/dashboards" className="text-decoration-none">
+                    <span>Forgot Password ?</span> 
+                </Link>
+                </div><br/>
                 <ThemeConsumer>
                 {
                     ({ color }) => (
-                        <Button color={ color } block tag={ Link } to="/">
+                        <Button color={ color } className="custom-btn-theme" block >
                             Sign In
                         </Button>
                     )
@@ -56,20 +121,55 @@ const Login = () => (
             </Form>
             { /* END Form */}
             { /* START Bottom Links */}
-            <div className="d-flex mb-5">
-                <Link to="/pages/forgotpassword" className="text-decoration-none">
-                    Forgot Password
+            <div className="forgot-p text-center mb-3">                
+                <Link to="/signup" className="ml-auto text-decoration-none">
+                    Don't have an account ? <span>SIGNUP</span>
                 </Link>
-                <Link to="/pages/register" className="ml-auto text-decoration-none">
-                    Register
-                </Link>
+            </div>
+            <div className="row">
+                <div className="col-md-12">
+                    <p className="or-login mb-3"><span>OR</span></p>
+                </div>
+                <div className="col-md-6">
+                <ThemeConsumer>
+                {
+                    ({ color }) => (
+                        <Button color={ color } className="custom-btn-theme bg-blue-f" block tag={ Link } to="/">
+                            <img className="google-icon-l" src={facebookicon}/> Facebook
+                        </Button>
+                    )
+                }
+                </ThemeConsumer>
+                </div>
+                <div className="col-md-6">
+                <ThemeConsumer>
+                {
+                    ({ color }) => (
+                        <Button color={ color } className="custom-btn-theme bg-default" block onClick={signInWithGoogle}>
+                            <img className="google-icon-l" src={googleicon}/> Google
+                        </Button>
+                    )
+                }
+                </ThemeConsumer>
+                </div>
             </div>
             { /* END Bottom Links */}
             { /* START Footer */}
-            <FooterAuth />
+          
             { /* END Footer */}
+            </div>
         </EmptyLayout.Section>
     </EmptyLayout>
-);
+    );
+}
+const mapStateToProps = (state) => {
+    return {
+        auth: state.authentication
+    }
+}
 
-export default Login;
+const actionCreators = {
+    login: userActions.login,
+};
+const connectedLoginPage = connect(mapStateToProps, actionCreators)(Login);
+export { connectedLoginPage as LoginPage };

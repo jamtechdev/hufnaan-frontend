@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import PropTypes from 'prop-types';
-
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom'
 import {
     Layout,
     ThemeProvider,
@@ -10,6 +11,7 @@ import './../styles/bootstrap.scss';
 import './../styles/main.scss';
 import './../styles/plugins/plugins.scss';
 import './../styles/plugins/plugins.css';
+import './../styles/plugins/ReactToastify.css';
 import {
     RoutedNavbars,
     RoutedSidebars,
@@ -24,26 +26,20 @@ const favIcons = [
     { rel: 'icon', type: 'image/png', sizes: '16x16', href: require('./../images/favicons/favicon-16x16.png') }
 ];
 
-class AppLayout extends React.Component {
-    static propTypes = {
-        children: PropTypes.node.isRequired
-    }
-
-    render() {
-        const { children } = this.props;
-        
+function AppLayout(props){
+    console.log("AppLayout",props)
+    const {children, authentication} = props;
         return (
-            <ThemeProvider initialStyle="light" initialColor="primary">
+            <ThemeProvider initialStyle="light" initialColor="success">
                 <Layout sidebarSlim favIcons={ favIcons }>
                     { /* --------- Navbar ----------- */ }
                     <Layout.Navbar>
-                        <RoutedNavbars />
+                    <RoutedNavbars loggedIn={authentication} />
                     </Layout.Navbar>
                     { /* -------- Sidebar ------------*/ }
                     <Layout.Sidebar>
-                        <RoutedSidebars />
+                    <RoutedSidebars loggedIn={authentication}/>
                     </Layout.Sidebar>
-
                     { /* -------- Content ------------*/ }
                     <Layout.Content>
                         { children }
@@ -51,7 +47,13 @@ class AppLayout extends React.Component {
                 </Layout>
             </ThemeProvider>
         );
-    }
+    
 }
 
-export default AppLayout;
+function mapState(state) {
+    const {authentication} = state;
+    return {authentication};
+}
+
+const AppLayoutComponent = withRouter(connect(mapState)(AppLayout));
+export default AppLayoutComponent

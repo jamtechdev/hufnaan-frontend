@@ -1,52 +1,23 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React from "react";
 
-import { SidebarMenu } from './../../components';
+import { SidebarMenu } from "./../../components";
+import { connect } from "react-redux";
+function SidebarMiddleNav(props) {
+    const { navigation } = props;
+    const menu = navigation.pages.map((menu, index) => 
+  <SidebarMenu.Item
+        key={index}
+        title={menu.title}
+        {...menu.main ? {to: menu.link} : {}}
+        icon={<i className={menu.icon}></i>}
+  >{menu.subMenu && menu.subMenu.map((smenu,i)=><SidebarMenu.Item to={smenu.link} key={i} title={smenu.title}/>)}</SidebarMenu.Item>);
 
-export const SidebarMiddleNav = () => (
-    <SidebarMenu>
-        <SidebarMenu.Item
-            icon={<i className="fa fa-fw fa-user"></i>}
-            title="Profile"
-        >
-            <SidebarMenu.Item title="Personal Details" to='/cards/cards' exact />
-            <SidebarMenu.Item title="Account Details" to='/cards/cardsheaders' exact />
-            <SidebarMenu.Item title="My Courses" to='/cards/cardsheaders' exact />
-            <SidebarMenu.Item title="My Documents" to='/cards/cardsheaders' exact />
-        </SidebarMenu.Item>
-        <SidebarMenu.Item
-            icon={<i className="fa fa-fw fa-book"></i>}
-            title="Courses"
-            to='/widgets'
-        />
-        <SidebarMenu.Item
-            icon={<i className="fa fa-fw fa-mortar-board"></i>}
-            title="Tutor"
-            to='/widgets'
-        />
-        <SidebarMenu.Item
-            icon={<i className="fa fa-fw fa-stethoscope"></i>}
-            title="Doctor"
-            to='/widgets'
-        />
-        <SidebarMenu.Item
-            icon={<i className="fa fa-fw fa-comments"></i>}
-            title="Chat"
-            to='/widgets'
-        />
-        <SidebarMenu.Item
-            icon={<i className="fa fa-fw fa-calendar"></i>}
-            title="My Bookings"
-            to='/widgets'
-        />
-        <SidebarMenu.Item
-            icon={<i className="fa fa-fw fa-headphones"></i>}
-            title="Support Center"
-            to='/widgets'
-        />
-        <SidebarMenu.Item
-            icon={<i className="fa fa-fw fa-th"></i>}
-            title="About Us"
-            to='/widgets'
-        />
-    </SidebarMenu >
-);
+  return <SidebarMenu>{menu}</SidebarMenu>;
+}
+function mapState(state) {
+  const { navigation } = { ...state };
+  return { navigation };
+}
+const connectedSidebarMiddleNav = connect(mapState, null)(SidebarMiddleNav);
+export { connectedSidebarMiddleNav as SidebarMiddleNav };

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 
 import {
@@ -7,52 +8,78 @@ import {
 } from 'react-router';
 
 // ----------- Pages Imports ---------------
-const Home = React.lazy(() => import('./FrontPages/Home'))
-const Login = React.lazy(() => import('./Login'))
-const Signup = React.lazy(() => import('./Signup'))
-// import ProjectsDashboard from './Dashboards/Projects'
-import SidebarWithNavbar from './Layouts/SidebarWithNavbar'
-const Loader = () => {
-    return (
-        <div className="loader-bg">
-            <div className="loader-track">
-                <div className="loader-fill"/>
-            </div>
-        </div>
-    );
-};
+import Home from './FrontPages/Home';
+import LoginPage from './Login';
+import Signup from './Signup';
+import Error404 from './Error404';
+import ProjectsDashboard from './Dashboards/Projects';
+ import SidebarWithNavbar from './Layouts/SidebarWithNavbar' 
+ import { PrivateRoute } from '../_component/PrivateRoute';
+ /**
+  * =====================================================
+  * STUDENT ROUTES IMPORT START
+  * =====================================================
+  */
+ import Tutors from './App/Student/Tutors'
+ import Courses from './App/Student/Courses'
+ import AccountDetails from './App/Student/AccountDetails'
+ import MyCourses from './App/Student/MyCourses'
+//  import MyDocuments from './App/Student/MyDocuments'
+ import PersonalDetails from './App/Student/PersonalDetails'
+ /**
+  * =====================================================
+  * STUDENT ROUTES IMPORT END
+  * =====================================================
+  */
 // eslint-disable-next-line no-unused-vars
 export const RoutedContent = () => {
     return (
-        <React.Suspense fallback={<Loader/>}>
         <Switch>
         <Route from="/" component={Home} exact />
-            <Route from="/login" component={Login} exact />
+            <Route from="/login" component={LoginPage} exact />
             <Route from="/signup" component={Signup} exact />
-            {/* <Route path="/dashboards/projects" exact component={ProjectsDashboard} /> */}
-
+            <PrivateRoute exact path="/dashboard" component={ProjectsDashboard} />
+            { /*    STUDENT ROUTE START    */ }
+            <PrivateRoute exact path="/student/courses" component={Courses} />
+            <PrivateRoute exact path="/student/tutors" component={Tutors} />
+            <PrivateRoute exact path="/student/account-details" component={AccountDetails} />
+            <PrivateRoute exact path="/student/my-courses" component={MyCourses} />
+            {/* <PrivateRoute exact path="/student/my-documents" component={MyDocuments} /> */}
+            <PrivateRoute exact path="/student/personal-details" component={PersonalDetails} />
+            { /*    STUDENT ROUTE END    */ }
             { /*    404    */ }
-            {/* <Redirect to="/pages/error-404" /> */}
+            <Route  path="*" component={Error404}/>
         </Switch>
-        </React.Suspense>
     );
 };
 
 //------ Custom Layout Parts --------
-export const RoutedNavbars  = () => (
+export function RoutedNavbars(props){
+    const { loggedIn } = props
+    console.log("RoutedNavBar",loggedIn)
+    return(
     <Switch>
         { /* Default Navbar: */}
+        {loggedIn.loggedIn &&
         <Route
             component={ SidebarWithNavbar.Navbar }
-        />
-    </Switch>  
-);
+        />}
+    </Switch> 
+    );
+   
+}
 
-export const RoutedSidebars = () => (
+export function RoutedSidebars(props){
+    const { loggedIn } = props
+    console.log("RoutedSideBar",loggedIn)
+    return(
     <Switch>
         { /* Default Sidebar: */}
+        {loggedIn.loggedIn &&
         <Route
             component={ SidebarWithNavbar.Sidebar }
-        />
+        />}
     </Switch>
+ 
 );
+    }

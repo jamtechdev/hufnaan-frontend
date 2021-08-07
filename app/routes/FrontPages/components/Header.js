@@ -6,7 +6,7 @@ import logo from '../../../images/front/logo.png'
 // import login from '../../../../images/front/login.svg'
 function Header() {
   return (
-    <div className="navigation-wrap start-header start-style">
+    <div className="navigation-wrap start-header start-style cu-header-top">
 		<div className="container">
 			<div className="row">
 				<div className="col-12">

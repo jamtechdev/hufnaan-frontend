@@ -15,7 +15,7 @@ export class ThemeProvider extends React.Component {
 
         this.state = {
             style: 'light',
-            color: 'primary',
+            color: 'success',
         };
     }
 
